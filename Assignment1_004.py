@@ -15,6 +15,8 @@ def plotFunction(f):
 	t = linspace(0, 2, 100)
 	plot(t,f(t))
 	grid(True)
+	#title('Plot of function f(x) = x²-2')
+	show()
 
 ## Task 1 b)
 def bisec(f, a, b, tol):
@@ -66,9 +68,9 @@ def iterationMethod(f,x0,tol):
 			if f(x0) < tol:
 				break
         		if i > 100:
-            			print 'With iterationMethod (which is the same as newton method??) a root was NOT found.'
+            			print 'With iterationMethod a root was NOT found.'
         			return
-    	print 'With iterationMethod (which is the same as newton method??) a root was found at {} with {} iterations.'.format(x0, i)
+    	print 'With iterationMethod a root was found at {} with {} iterations.'.format(x0, i)
     	return x0, i, iterations
 
 ## Task 4
@@ -82,6 +84,8 @@ def newton(f,xn,tol):
         	i += 1
         	val = f(xn)
         	deriv = derivative(f,xn)
+		if deriv == 0:
+			raise Exception('A derivative equal to zero???!')
         	xnp1 = xn - val/deriv
         	changePrevValue = abs(xn-xnp1)
         	xn = xnp1
@@ -167,6 +171,12 @@ def plotIncrementApproximation(name, iterations):
 		val = abs(iterations[i] - iterations[i - 1])
 		values.append(val)
 		i += 1
+	plot(values)
+	grid(True)
+	title(name)
+	xlabel('Iteration #')
+	ylabel('Absolute Value')
+	show()
 	return
 
 #Main program/code
@@ -177,7 +187,6 @@ while True:
 	if mainmenu == str(1):
 
 		plotFunction(func)
-		show()
 		print 'For function func, x**2 -2:'
 		bisecReturn = bisec(func, 0, 2, tolerance)
 		print '--bisec method gives  {} in {} iterations.'.format(bisecReturn[0], bisecReturn[1])
@@ -187,31 +196,40 @@ while True:
 		print '--bisec method gives  {} in {} iterations.'.format(bisecReturn[0], bisecReturn[1])
 		print '--fsolve method gives {}.'.format(fsolve(funcThreeRoots, 0.3)[0])
 
-		iterationMethod(func, 50, tolerance)
-		iterationMethod(funcThreeRoots, 50, tolerance)
-		iterationMethod(funcWithNoRoot, 50, tolerance)
+		iterationMethod(func, 2, tolerance)
+		iterationMethod(funcThreeRoots, 2, tolerance)
+		iterationMethod(funcWithNoRoot, 2, tolerance)
 
-		newton(func, 50, tolerance)
-		newton(funcThreeRoots, 50, tolerance)
-		newton(funcWithNoRoot, 50, tolerance)
+		newton(func, 2, tolerance)
+		newton(funcThreeRoots, 2, tolerance)
+		newton(funcWithNoRoot, 2, tolerance)
 		
-		secant(func, 5, 10, tolerance)
-		secant(func, -10, 0, tolerance)
-		secant(funcThreeRoots, 5, 10, tolerance)
-		secant(funcWithNoRoot, 5, 10, tolerance)
+		secant(func, 2, 3, tolerance)
+		secant(funcThreeRoots, 2, 3, tolerance)
+		secant(funcWithNoRoot, 2, 3, tolerance)
 		break
 	elif mainmenu == str(2):
 		selection = str(input('For bisection press 1, for unknown iteration method press 2, for newton press 3, for secant press 4: '))
 		while True:
-			if selection == 1:
+			if selection == str(1):
 				bisecReturn = bisec2(func, 0, 2, tolerance)
 				iterationPlot('Bisec method', bisecReturn[2])
+				plotIncrementApproximation('Bisec Increment Approximation', bisecReturn[2])
 				break
-			elif selection == 2:
+			elif selection == str(2):
+				iterationReturn = iterationMethod(func, 2, tolerance)
+                                iterationPlot('Unknown Iteration Method', iterationReturn[2])
+                                plotIncrementApproximation('Unknown Iteration Increment Approximation', iterationReturn[2])
 				break
-			elif selection == 3:
+			elif selection == str(3):
+                                newtonReturn = newton(func, 2, tolerance)
+                                iterationPlot('Newton Method', newtonReturn[2])
+                                plotIncrementApproximation('Newton Increment Approximation', newtonReturn[2])
 				break
-			elif selection == 4:
+			elif selection == str(4):
+                                secantReturn = secant(func, 2, 3, tolerance)
+                                iterationPlot('Secant Method', secantReturn[2])
+                                plotIncrementApproximation('Secant Increment Approximation', secantReturn[2])
 				break
 			else:
 				selection = input('Please type a value between 1 and 4: ')
