@@ -82,8 +82,8 @@ def myGauss(m):
 #### -- Task 2 -- #####
 
 def membrane(alpha = 1):
-	A = [[0]*30 for j in range(30)]
-	#A = zer0s((30,30))
+	#A = [[0]*30 for j in range(30)]
+	A = zeros((30,30))
 	A[0][0] = -(2 + alpha)
 	A[0][1] = 1
 	for i in range(1, 29):
@@ -92,11 +92,44 @@ def membrane(alpha = 1):
 		A[i][i + 1] = 1
 	A[29][28] = 1
 	A[29][29] = -(2 + alpha)
-	B = [[0]*30]
-	#B = zeros(30)
+	#B = [[0]*30]
+	B = zeros(30)
 	B[5] = 2
-	print A[29][29]
-	return A
+	print B
+	return A, B
+
+def LUsolver(A, b):
+	U, L = LUFact(A)
+	n = len(A)	
+	y = []
+	for row in range(n):
+		if row == 0:
+			y.append(b[row])
+		else:
+			tmpSum = 0
+			for k in range(row):
+				tmpSum += L[row][k]*y[k]
+			y.append(b[row] - tmpSum)
+	print y
+	x = zeros(n)
+	for i in range(n):
+		row = n - i - 1
+		if row == n - 1:
+			x[row] = y[row] / U[row][row]
+		else:
+			tmpSum = 0
+			q = n - 1 - row
+			for k in range(q):
+				r = n - 1 - k
+				tmpSum += U[row][r]*x[r]
+			x[row] = (y[row] - tmpSum) / U[row][row]
+	print x
+	return
+
+def test001():
+	A = array([[1, 2, 3], [3, 4, 1], [1, 0, 1]])
+	B = array([0, 6, 1])
+	return A, B
 
 x = array([0.7, 0.7])
 m = array([[1,2,3], [3,4,1], [1,0,1]])
@@ -106,9 +139,10 @@ m = array([[1,2,3], [3,4,1], [1,0,1]])
 #print LUFact(m)
 
 print newton(robotArm, x)
-membrane
-
-
-
+#membrane()
+membraneReturn = membrane()
+LUsolver(membraneReturn[0], membraneReturn[1])
+#testReturn = test001()
+#LUsolver(testReturn[0], testReturn[1])
 
 
