@@ -131,6 +131,12 @@ def test001():
 	B = array([0, 6, 1])
 	return A, B
 
+def iterativeJacobi(A, b):
+	Q = diag(A)
+	return
+
+
+
 x = array([0.7, 0.7])
 m = array([[1,2,3], [3,4,1], [1,0,1]])
 #print robotArm(x)
@@ -142,7 +148,7 @@ print newton(robotArm, x)
 #membrane()
 membraneReturn = membrane()
 LUsolver(membraneReturn[0], membraneReturn[1])
-#testReturn = test001()
-#LUsolver(testReturn[0], testReturn[1])
+testReturn = test001()
+LUsolver(testReturn[0], testReturn[1])
 
 
