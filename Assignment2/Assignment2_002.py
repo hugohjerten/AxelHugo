@@ -146,3 +146,4 @@ LUsolver(membraneReturn[0], membraneReturn[1])
 #LUsolver(testReturn[0], testReturn[1])
 
 
+#print LUFact(jacobian(robotArm, x))
