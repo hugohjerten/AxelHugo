@@ -158,3 +158,9 @@ for i in range(3):
 	plot(x2, y2, xc, yc)
 	n += 6
 show()
+
+
+## -- Task 5 -- ##
+
+for count in range(5):
+	print sum(array([lagrange(count, i, energy) for i in range(len(energy))]))
