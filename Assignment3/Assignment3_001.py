@@ -14,11 +14,11 @@ print(days)
 def polyfitter(x, y, name):
 	n = len(x)-1
 	p = polyfit(x, y, n)
-	plotter(x1, polyval(p,x1), name)
 	return p
 
 def plotter(x, y, name = '', xname = '', yname = ''):
-	plot(x, y)
+	subplot(211)
+	plot(x,y)
 	grid(True)
 	if len(name) > 0:
 		title(name)
@@ -45,13 +45,35 @@ def interpolationLagrange(x, xm, ym):
 	n = len(xm) - 1
 	p = array([lagrange(x, i, xm) for i in range(n+1)])
 	y = dot(ym, p)
-	print y
-	plotter(x, polyval(y, x), 'Lagrange')
+	#print y
+	print 'The xsize value for Lagrange:'
+	print len(x)
+	print 'The ysizevalue for Lagrange:'
+	print len(y)
 	return y
 
-
 x1 = linspace(0.9,5.1,1000)
-#print polyfitter(days, energy, 'Polyfitter')
-print interpolationLagrange(x1, days, energy)
+polyfitterReturn =  polyfitter(days, energy, 'Polyfitter')
+interpolationLagrangeReturn = interpolationLagrange(x1, days, energy)
+
+print polyfitterReturn
+print interpolationLagrangeReturn
+
+subplot(211)
+plot(x1, polyval(polyfitterReturn, x1))
+grid(True)
+title('Polyfitter')
+subplot(212)
+plot(x1, interpolationLagrangeReturn)
+grid(True)
+title('Lagrange')
+show()
+
+##Göra sista delen på Task 1##
+
+
+
+
+
 
 
