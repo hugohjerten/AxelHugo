@@ -1,5 +1,7 @@
 from scipy import *
 from pylab import *
+from scipy.interpolate import interp1d
+from numpy import *
 
 
 energy = array([27.93, 46.98, 31.95, 31.68, 21.00])
@@ -52,13 +54,38 @@ def interpolationLagrange(x, xm, ym):
 	print len(y)
 	return y
 
+
+## -- Task 2 -- ##
+def w(x, xn):
+
+	w = 1
+	for j in range(len(xn)):
+		w *= (x-xn[j])
+	return w
+
+
+def chebishev(x, xn):
+	
+	
+	
+	return	
+
+#xn = [-0.25, -0.5, 0, 0.25, 0.5]
+xn = linspace(-1,1, 15)
+x = linspace(-1,1, 10000)
+f = -x**3 + x 
+f2 = interp1d(x, f) 
+plot(x,f, x, w(x,xn), xn, f2(xn))
+##plot(x, w(x, xn))
+show()
+
 x1 = linspace(0.9,5.1,1000)
 polyfitterReturn =  polyfitter(days, energy, 'Polyfitter')
 interpolationLagrangeReturn = interpolationLagrange(x1, days, energy)
 
-print polyfitterReturn
-print interpolationLagrangeReturn
-
+#print polyfitterReturn
+#print interpolationLagrangeReturn
+'''
 subplot(211)
 plot(x1, polyval(polyfitterReturn, x1))
 grid(True)
@@ -68,8 +95,7 @@ plot(x1, interpolationLagrangeReturn)
 grid(True)
 title('Lagrange')
 show()
-
-##Göra sista delen på Task 1##
+'''
 
 
 
