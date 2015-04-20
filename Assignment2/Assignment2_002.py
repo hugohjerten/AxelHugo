@@ -99,6 +99,10 @@ def membrane(alpha = 1):
 	return A, B
 
 def LUsolver(A, b):
+	print 'A matrix:'
+	print A
+	print 'b matrix:'
+	print b
 	U, L = LUFact(A)
 	n = len(A)	
 	y = []
@@ -123,16 +127,60 @@ def LUsolver(A, b):
 				r = n - 1 - k
 				tmpSum += U[row][r]*x[r]
 			x[row] = (y[row] - tmpSum) / U[row][row]
+	print 'Exact solution from LU method: '
 	print x
-	return
+	print 'Check to see if answer is correct:'
+	print dot(A, x)
+	return x
+# Test of Alexandros LUsolve code. does not give correct answer though
+#def LUsolve(A, b):
+#	U, L = LUFact(A)
+#	n = len(A)
+#	y = zeros(n)
+#	y[0] = b[0]
+#	for k in range(1, n):
+#		y[k] = b[k] - dot(L[k,0:k], b[0:k])
+#	x = zeros(n)
+#	x[n-1] = y[n-1]
+#	for k in range(n-2, -1, -1):
+#		x[k] = (y[k] - dot(U[k, k:n-1], y[k:n-1])) / U[k][k]
+#	print x
+#	return
+
 
 def test001():
 	A = array([[1, 2, 3], [3, 4, 1], [1, 0, 1]])
-	B = array([0, 6, 1])
+	B = array([[0],[6], [1]])
 	return A, B
 
-def iterativeJacobi(A, b):
-	Q = diag(A)
+def tolTest(x, xExact, tol):
+	diff = abs(x - xExact)
+	tmpSum = 0
+	sum(diff)
+	return sum > tol
+
+def iterativeJacobi(A, b, x, xExact):
+	Qinv = diag(1.0  / diag(A))
+	print 'Qinverse matrix:'
+	print Qinv
+	G = eye(len(A)) - dot(Qinv, A)
+	print 'b matrix:'
+	print b
+	print 'G matrix:'
+	print G
+	print 'C matrix:'
+	C = dot(Qinv, b)
+	print C
+	print 'print dot(G,x):'
+	print dot(G, x)
+	eps = 1.e-5
+	while True:
+		xp1 = dot(G, x) + C
+		x = xp1
+		if tolTest(x, xExact, eps):
+			break
+	
+	print 'The iterative jacobi method returned a x value of:\n {}'.format(x)
 	return
 
 
@@ -144,11 +192,27 @@ m = array([[1,2,3], [3,4,1], [1,0,1]])
 #print LUFact(jacobian(robotArm, x))
 #print LUFact(m)
 
-print newton(robotArm, x)
+#print newton(robotArm, x)
 #membrane()
 membraneReturn = membrane()
-LUsolver(membraneReturn[0], membraneReturn[1])
-testReturn = test001()
-LUsolver(testReturn[0], testReturn[1])
+membraneExact = LUsolver(membraneReturn[0], membraneReturn[1])
+#testReturn = test001()
+#testExact = LUsolver(testReturn[0], testReturn[1])
+#testStart = zeros((3,1))
+#print 'x matrix:'
+#print testStart
+membraneStart = zeros(30)
+#iterativeJacobi(testReturn[0], testReturn[1], testStart, testExact)
+iterativeJacobi(membraneReturn[0], membraneReturn[1], membraneStart, membraneExact)
+
+
+
+
+
+
+
+
+
+
 
 
