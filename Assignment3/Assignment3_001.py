@@ -8,18 +8,13 @@ for i in range(len(energy)):
 	days.append(i+1)
 print(energy)
 print(days)
-x1 = linspace(0.9,5.1,1000)
 
 ## --Task 1-- ""
 
 def polyfitter(x, y, name):
 	n = len(x)-1
 	p = polyfit(x, y, n)
-<<<<<<< HEAD
-	plotter(x1, polyval(p,x1), name, xname, yname)
-=======
 	plotter(x1, polyval(p,x1), name)
->>>>>>> b7c0bd6eac30dfafe194019ba45070635b30912d
 	return p
 
 def plotter(x, y, name = '', xname = '', yname = ''):
@@ -34,17 +29,6 @@ def plotter(x, y, name = '', xname = '', yname = ''):
 	show()
 	return
 
-<<<<<<< HEAD
-print(polyfitter(days,energy, 'Polyfitter')) 
-
-figure(2)
-V = vander(days,len(days))
-a = solve(V,energy)
-p=polyfit(days,energy,len(days)-1)
-plot(x1,polyval(p,x1))
-grid(True)
-show()
-=======
 def lagrange(x, i, xm):
 	"""
 	Evaluates the i-th Lagrange polynomial at x
@@ -66,10 +50,8 @@ def interpolationLagrange(x, xm, ym):
 	return y
 
 
->>>>>>> b7c0bd6eac30dfafe194019ba45070635b30912d
-
-
-
 x1 = linspace(0.9,5.1,1000)
 #print polyfitter(days, energy, 'Polyfitter')
 print interpolationLagrange(x1, days, energy)
+
+
