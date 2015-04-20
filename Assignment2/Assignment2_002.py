@@ -152,4 +152,3 @@ testReturn = test001()
 LUsolver(testReturn[0], testReturn[1])
 
 
-#print LUFact(jacobian(robotArm, x))
