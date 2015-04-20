@@ -216,3 +216,4 @@ iterativeJacobi(membraneReturn[0], membraneReturn[1], membraneStart, membraneExa
 
 
 
+#print LUFact(jacobian(robotArm, x))
