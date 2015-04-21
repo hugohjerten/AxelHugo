@@ -52,7 +52,7 @@ vanderEnergy0 = polyval(interpolationVanderReturn, 8.0)
 print 'Polyfit value: {}'.format(polyFitEnergy0)
 print 'Lagrange value: {}'.format(lagrangeEnergy0)
 print 'Vandermonde value: {}'.format(vanderEnergy0)
-
+'''
 figure(1)
 subplot(311)
 plot(x1, polyval(polyfitterReturn, x1))
@@ -63,11 +63,11 @@ plot(x1, interpolationLagrangeReturn)
 grid(True)
 title('Lagrange')
 subplot(313)
-plot(x1, polyval(interpolationVanderReturn, x1))
+#plot(x1, polyval(interpolationVanderReturn, x1))
 grid(True)
-title('Vandermonde')
-show()
-
+#title('Vandermonde')
+#show()
+'''
 for i in range(len(energy)):
 	dx = 0.01
 	energy[i] += dx
@@ -98,26 +98,45 @@ def w(x, xn):
 	return w
 
 #xn = [-0.25, -0.5, 0, 0.25, 0.5]
-figure(2)
-xn = linspace(-1,1, 15)
-x = linspace(-1,1, 10000)
+#figure(2)
+xn = linspace(-1,1, 8)
+x = linspace(-1, 1, 10000)
 f = -x**3 + x 
 f2 = interp1d(x, f) 
-plot(x, f, x, w(x,xn), xn, f2(xn))
-title('Interpolation Error')
+#plot(x, f, x, w(x,xn), xn, f2(xn))
+#title('Interpolation Error')
 ##plot(x, w(x, xn))
-show()
+#show()
 
 ## -- Task 3 -- ##
 
-def chebyshev(xn, f):
-	n = len(x)
-	k = arange(n)
-	xc = cos(((2*k - 1)*pi/(2*n)))
+def chebyshev(n):
+	
+	xc = [] 
+	for i in range(n):
+		xc.append(cos(((2*(i+1) - 1)*pi/(2*n))))
+	xc = xc[::-1]
 	return xc
 
+xc = chebyshev(8)
 figure(3)
-xc = chebyshev(xn, f)
+subplot(411)
+plot(x, f)
+#grid(True)
+title('Function')
+subplot(412)
+plot(xc ,f2(xc))
+#grid(True)
+title('chebyshev')
+subplot(413)
+plot(xn, f2(xn))
+#grid(True)
+title('Regular interpolation')
+subplot(414)
+plot(x, f, xc, f2(xc), 'x', xn, f2(xn), 'o')
+title('all in all')
+
+show()
 print xc
 #plot(x, f, 
 
