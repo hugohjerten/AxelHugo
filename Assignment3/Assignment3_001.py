@@ -1,6 +1,7 @@
 from scipy import *
 from pylab import *
 from scipy.interpolate import interp1d
+from scipy.linalg import solve
 from numpy import *
 
 ## --Task 1-- ""
@@ -97,21 +98,29 @@ def w(x, xn):
 	return w
 
 #xn = [-0.25, -0.5, 0, 0.25, 0.5]
+figure(2)
 xn = linspace(-1,1, 15)
 x = linspace(-1,1, 10000)
 f = -x**3 + x 
 f2 = interp1d(x, f) 
-plot(x,f, x, w(x,xn), xn, f2(xn))
+plot(x, f, x, w(x,xn), xn, f2(xn))
+title('Interpolation Error')
 ##plot(x, w(x, xn))
 show()
 
 ## -- Task 3 -- ##
 
-def chebishev(x, xn):
-	
-	
-	
-	return	
+def chebyshev(xn, f):
+	n = len(x)
+	k = arange(n)
+	xc = cos(((2*k - 1)*pi/(2*n)))
+	return xc
+
+figure(3)
+xc = chebyshev(xn, f)
+print xc
+#plot(x, f, 
+
 
 ## -- Task 4 -- ##
 
