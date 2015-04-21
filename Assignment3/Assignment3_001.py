@@ -3,33 +3,12 @@ from pylab import *
 from scipy.interpolate import interp1d
 from numpy import *
 
-
-energy = array([27.93, 46.98, 31.95, 31.68, 21.00])
-days = []
-for i in range(len(energy)):
-	days.append(i+1)
-print(energy)
-print(days)
-
 ## --Task 1-- ""
 
 def polyfitter(x, y, name):
 	n = len(x)-1
 	p = polyfit(x, y, n)
 	return p
-
-def plotter(x, y, name = '', xname = '', yname = ''):
-	subplot(211)
-	plot(x,y)
-	grid(True)
-	if len(name) > 0:
-		title(name)
-	if len(xname) > 0:
-		xlabel(xname)
-	if len(yname) > 0:
-		ylabel(yname)
-	show()
-	return
 
 def lagrange(x, i, xm):
 	"""
@@ -43,6 +22,11 @@ def lagrange(x, i, xm):
 			y *= (x - xm[j])/(xm[i]-xm[j])
 	return y
 
+def interpolationVander(x, y):
+	V = vander(x,len(x))
+	a = solve(V,y)
+	return a
+
 def interpolationLagrange(x, xm, ym):
 	n = len(xm) - 1
 	p = array([lagrange(x, i, xm) for i in range(n+1)])
@@ -50,37 +34,10 @@ def interpolationLagrange(x, xm, ym):
 	#print y
 	return y
 
-<<<<<<< HEAD
-
-## -- Task 2 -- ##
-def w(x, xn):
-
-	w = 1
-	for j in range(len(xn)):
-		w *= (x-xn[j])
-	return w
-
-
-def chebishev(x, xn):
-	
-	
-	
-	return	
-
-#xn = [-0.25, -0.5, 0, 0.25, 0.5]
-xn = linspace(-1,1, 15)
-x = linspace(-1,1, 10000)
-f = -x**3 + x 
-f2 = interp1d(x, f) 
-plot(x,f, x, w(x,xn), xn, f2(xn))
-##plot(x, w(x, xn))
-show()
-=======
-def interpolationVander(x, y):
-	V = vander(x,len(x))
-	a = solve(V,y)
-	return a
->>>>>>> 2a552121396083bbe8a5abc693cf6b07c927d5ff
+energy = array([27.93, 46.98, 31.95, 31.68, 21.00])
+days = []
+for i in range(len(energy)):
+	days.append(i+1)
 
 x1 = linspace(0.9,5.1,1000)
 polyfitterReturn =  polyfitter(days, energy, 'Polyfitter')
@@ -91,19 +48,12 @@ polyFitEnergy0 = polyval(polyfitterReturn, 8.0)
 lagrangeEnergy0 = interpolationLagrange(8.0, days, energy)
 vanderEnergy0 = polyval(interpolationVanderReturn, 8.0)
 
-<<<<<<< HEAD
-#print polyfitterReturn
-#print interpolationLagrangeReturn
-'''
-subplot(211)
-=======
 print 'Polyfit value: {}'.format(polyFitEnergy0)
 print 'Lagrange value: {}'.format(lagrangeEnergy0)
 print 'Vandermonde value: {}'.format(vanderEnergy0)
 
 figure(1)
 subplot(311)
->>>>>>> 2a552121396083bbe8a5abc693cf6b07c927d5ff
 plot(x1, polyval(polyfitterReturn, x1))
 grid(True)
 title('Polyfitter')
@@ -116,11 +66,7 @@ plot(x1, polyval(interpolationVanderReturn, x1))
 grid(True)
 title('Vandermonde')
 show()
-<<<<<<< HEAD
-'''
 
-
-=======
 for i in range(len(energy)):
 	dx = 0.01
 	energy[i] += dx
@@ -141,15 +87,37 @@ for i in range(len(energy)):
 	print 'Change the data point #{}, the relative sensitivty of lagrange: {}'.format(i+1, relLag)	
 	print 'Change the data point #{}, the relative sensitivty of vander: {}'.format(i+1, relVan)
 
+## -- Task 2 -- ##
 
+def w(x, xn):
 
-## Task 4 ##
+	w = 1
+	for j in range(len(xn)):
+		w *= (x-xn[j])
+	return w
+
+#xn = [-0.25, -0.5, 0, 0.25, 0.5]
+xn = linspace(-1,1, 15)
+x = linspace(-1,1, 10000)
+f = -x**3 + x 
+f2 = interp1d(x, f) 
+plot(x,f, x, w(x,xn), xn, f2(xn))
+##plot(x, w(x, xn))
+show()
+
+## -- Task 3 -- ##
+
+def chebishev(x, xn):
+	
+	
+	
+	return	
+
+## -- Task 4 -- ##
 
 def function(x):
 	y = 1.0 / (1.0 + 25*x**2)
 	return y
->>>>>>> 2a552121396083bbe8a5abc693cf6b07c927d5ff
-
 
 n = 3
 x2 = linspace(-1,1,n)
