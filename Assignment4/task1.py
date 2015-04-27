@@ -7,6 +7,8 @@ Created on Mon Apr 27 10:09:23 2015
 #from __future__ import division # 2st. Understreck på varsin sida
 from scipy import *
 from pylab import *
+from numpy import *
+from matplotlib.pyplot import *
 from scipy.linalg import solve
 
 def cubeSpline(xint, yint):
@@ -39,8 +41,7 @@ def cubeSpline(xint, yint):
 		coeff[i][1] = b[i]
 		coeff[i][2] = c[i]
 		coeff[i][3] = d[i]
-	print 'Size of coeff is: {}'.format(len(coeff))
-	print 'Coeff-matrix\n {}'.format(coeff)
+	print 'Coeff-matrix:\n {}'.format(coeff)
 	return coeff
 
 def cubeSplineVal(coeff, xint, xval):
@@ -57,16 +58,82 @@ def cubeSplineVal(coeff, xint, xval):
 	xdiff = xval - xint[row]
 	return coeff[row][0]*xdiff**3 + coeff[row][1]*xdiff**2 + coeff[row][2]*xdiff + coeff[row][3]
 
+def plotSpline(coeff, xint, yint, name):
+	a = xint[0]
+	b = xint[-1]
+	xplot = linspace(a, b, 1000)
+	yplot = []
+	for i in range(len(xplot)):
+		yplot.append(cubeSplineVal(coeff, xint, xplot[i]))
+	figure(1)
+	title(name)
+	plot(xplot, yplot)
+	plot(xint, yint, 'kx')
+	grid(True)
+	show()
+	return
+
+def Bsplbasis(xi,di,dx):
+    """
+    This code evaluates a cubic spline given by its knots and de Boor points
+    at equidistant points
+    On input:
+    =========
+    xi.... list or array of length m+7 where 
+           xi is composed out of the m+1 knots x and 6 additional 
+           points at both boundaries. Preferably one takes the first and last
+           knot and repeats it so that it gets multiplicity 4 each.
+    di.... list or an array of m+3 de Boor points
+    dx.... float which is used to define the evaluation points, which form an
+           equidistant grid starting at xi[3]=x[0] and having an interval length dx
+    On return:
+    ==========
+    q..... list with the values of the spline evaluated at
+           xi[3]+i*dt, i=0,... as long as xi[3]+i*dt <= xi[-4]  
+
+    """
+    eps = 1.e-14
+    m = len(xi) 
+    i = 4      #index of first knot
+    q=[]
+    for u in arange(xi[3],xi[m-3]+dx,dx):
+        
+        # check if u value has moved to the next knot interval
+        # include small tolerance on knots to avoid round-off error in comparisons.
+        
+        while (u>(xi[i]+eps)):
+            i+=1
+        # Now evaluate the spline at u using the deBoor algorithm.
+        # Start with the relevant control points.
+        # w used here to simplify indices.
+        im4 = i-4
+        qq = zeros(len(di))
+        for j in range(1,5,1):
+            qq[j-1]=di[im4+j-1]
+        for j in range(1,4,1):
+            for k in range(1,4-j+1,1):
+                qq[k-1] = ((xi[im4 + k + 4-1] - u)/(xi[im4 + k + 4-1] - xi[im4 + k + j-1])) * qq[k-1] + \
+                            ((u - xi[im4 + k + j-1])/(xi[im4 + k + 4-1] - xi[im4 + k + j-1])) * qq[k+1-1]
+        #Create vector of points on the B-spline curve.
+        q.append(qq[0])
+    return q
+
 x = linspace(0,9,10)
-print x
 y = [4, 8, 3, 6, 7, 9, 2, 5, 6, 11]
 S = cubeSpline(x, y)
 for i in range(10):
 	print cubeSplineVal(S, x, i)
+plotSpline(S, x, y, 'Task #1b, random points')
 
-#print cubeSplineVal(cubeSpline(x, y), x, 6)
+# -- Task 2a -- #
+
+x = [0, 1, 2, 3, 4, 5, 6]
+y = [1, 3, -2, 0, 1, 0, 1]
+
+plotSpline(cubeSpline(x, y), x, y, 'Task #2a')
 
 
+# -- Task 2b -- #
 
 
 
