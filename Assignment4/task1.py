@@ -41,7 +41,7 @@ def cubeSpline(xint, yint):
 		coeff[i][1] = b[i]
 		coeff[i][2] = c[i]
 		coeff[i][3] = d[i]
-	print 'Coeff-matrix:\n {}'.format(coeff)
+	print ('Coeff-matrix:\n {}'.format(coeff))
 	return coeff
 
 def cubeSplineVal(coeff, xint, xval):
@@ -93,7 +93,7 @@ def Bsplbasis(xi,di,dx):
 
     """
     eps = 1.e-14
-    m = len(xi) 
+    m = len(xi) #number knots
     i = 4      #index of first knot
     q=[]
     for u in arange(xi[3],xi[m-3]+dx,dx):
@@ -122,7 +122,7 @@ x = linspace(0,9,10)
 y = [4, 8, 3, 6, 7, 9, 2, 5, 6, 11]
 S = cubeSpline(x, y)
 for i in range(10):
-	print cubeSplineVal(S, x, i)
+	print (cubeSplineVal(S, x, i))
 plotSpline(S, x, y, 'Task #1b, random points')
 
 # -- Task 2a -- #
