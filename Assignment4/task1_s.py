@@ -110,34 +110,6 @@ def Bsplbasis(xi,di,dx):
         q.append(qq[0])
     return q
 
-
-x = linspace(0,9,10)
-y = [4, 8, 3, 6, 7, 9, 2, 5, 6, 11]
-S = cubeSpline(x, y)
-for i in range(10):
-	print (cubeSplineVal(S, x, i))
-plotSpline(S, x, y,1, 'Task #1b, random points')
-show()
-
-# -- Task 2a -- #
-
-x = [0, 1, 2, 3, 4, 5, 6]
-y = [1., 3., -2., 0., 1., 0., 1.]
-plotSpline(cubeSpline(x, y), x, y,2, 'Task #2a and b')
-
-# -- Task 2b -- #
-
-xi= [0,0,0,0, 1, 2, 3, 4, 5, 6,6,6,6] # The x-vector with 3 extra nodes on each sides, value of the endponts.
-di= [1.,2.3,5.15,-4.35,0.8,1.4,-0.73,0.6,1.] # De Boor "control points" to the B-spline function two extra on each side.
-dx= 0.02 # the interval between calculated values for the B-spline
-BsplYval = Bsplbasis(xi,di,dx) # A vector with the B-splines value, points with distans dx between.
-
-figure(2)
-BsplXval=linspace(min(xi),max(xi),len(BsplYval))
-plot(BsplXval,BsplYval,'y')
-grid(True)
-show()
-
 def s1002(S):
      """
      this function describes the wheel profile s1002
@@ -256,7 +228,80 @@ def s1002(S):
         wheel   =   -BA*S + AA;
      return wheel
 
+x = linspace(0,9,10)
+y = [4, 8, 3, 6, 7, 9, 2, 5, 6, 11]
+S = cubeSpline(x, y)
+plotSpline(S, x, y,1, 'Task #1b, random points')
+show()
+
+# -- Task 2a -- #
+
+x = [0, 1, 2, 3, 4, 5, 6]
+y = [1., 3., -2., 0., 1., 0., 1.]
+plotSpline(cubeSpline(x, y), x, y,2, 'Task #2a and b')
+
+# -- Task 2b -- #
+
+xi= [0,0,0,0, 1, 2, 3, 4, 5, 6,6,6,6] # The x-vector with 3 extra nodes on each sides, value of the endponts.
+di= [1.,2.3,5.15,-4.35,0.8,1.4,-0.73,0.6,1.] # De Boor "control points" to the B-spline function two extra on each side.
+dx= 0.02 # the interval between calculated values for the B-spline
+BsplYval = Bsplbasis(xi,di,dx) # A vector with the B-splines value, points with distans dx between.
+
+figure(2)
+BsplXval=linspace(min(xi),max(xi),len(BsplYval))
+plot(BsplXval,BsplYval,'y')
+grid(True)
+show()
+
+# -- Task 3 -- #
+
+mmPerf = linspace(-69, 60, 1000)
+mm = linspace(-69, 60, 10)
+wheelPerf = []
+wheel = []
+
+for i in range(1000):
+	wheelPerf.append(s1002(mmPerf[i])*-1)	
+
+for i in range(10):
+	wheel.append(s1002(mm[i])*-1)
+#print wheel
+
+S = cubeSpline(mm, wheel)
+
+plotSpline(S, mm, wheel, 3, 'Task #3 - 10 points')
+plot(mmPerf,wheelPerf, 'c')
+show()
+
+mm = linspace(-69, 60, 7)
+wheel = []
+
+for i in range(7):
+        wheel.append(s1002(mm[i])*-1)
+print wheel
+
+S = cubeSpline(mm, wheel)
+
+plotSpline(S, mm, wheel, 3, 'Task #3 - 7 points')
+plot(mmPerf,wheelPerf, 'c')
+show()
+
+mm = linspace(-69, 60, 6)
+wheel = []
+
+for i in range(6):
+        wheel.append(s1002(mm[i])*-1)
+print wheel
+
+S = cubeSpline(mm, wheel)
+
+plotSpline(S, mm, wheel, 3, 'Task #3 - 6 points')
+plot(mmPerf,wheelPerf, 'c')
+show()
 
 
-  
+
+
+
+
 
