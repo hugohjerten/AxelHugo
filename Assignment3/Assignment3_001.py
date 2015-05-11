@@ -98,16 +98,34 @@ def w(x, xn):
 	return w
 
 #xn = [-0.25, -0.5, 0, 0.25, 0.5]
-#figure(2)
-xn = linspace(-1,1, 8)
+xn = linspace(-1, 1, 15)
+'''
+for i in range(len(xn)):
+	xn[i] = xn[i]**2
+for i in range(len(xn)/2):
+	xn[i] = -xn[i]
+print xn
+'''
+xn2 = linspace(-1, 1, 5)
+xn3 = linspace(-1, 1, 15)
 x = linspace(-1, 1, 10000)
 f = -x**3 + x 
 f2 = interp1d(x, f) 
 #plot(x, f, x, w(x,xn), xn, f2(xn))
-#title('Interpolation Error')
-##plot(x, w(x, xn))
-#show()
+'''
+figure(2)
+subplot(311)
+plot(x, w(x, xn2))
+title('Interpolation error at 5 pts')
+subplot(312)
+plot(x, w(x, xn3))
+title('Interpolation error at 15 pts')
+subplot(313)
+plot(x, w(x, xn))
+title('Interpolation error at 15 pts, optimized')
 
+show()
+'''
 ## -- Task 3 -- ##
 
 def chebyshev(n):
@@ -118,7 +136,8 @@ def chebyshev(n):
 	xc = xc[::-1]
 	return xc
 
-xc = chebyshev(8)
+xc = chebyshev(15)
+'''
 figure(3)
 subplot(411)
 plot(x, f)
@@ -136,11 +155,14 @@ subplot(414)
 plot(x, f, xc, f2(xc), 'x', xn, f2(xn), 'o')
 title('all in all')
 
+plot(x, w(x, xn2))
 show()
 print xc
-#plot(x, f, 
-
-
+'''
+plot(x, w(x,(chebyshev(15))))
+ylim([-0.0020,0.0020])
+title('Chebyshev pts in omega')
+show()
 ## -- Task 4 -- ##
 
 def function(x):
