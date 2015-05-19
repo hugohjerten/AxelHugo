@@ -54,7 +54,7 @@ def explicitEuler(Un, Vn, En, Fn, h):
 	return x,y
 
 
-def implicitEuler(Un, Vn, En, Fn, h, tol):
+def implicitEuler(Un, Vn, En, Fn, h, tol, innerloop):
 	n = linspace(0, 100, 100/h)
 	x = []
 	y = []
@@ -65,41 +65,63 @@ def implicitEuler(Un, Vn, En, Fn, h, tol):
 	y.append(En)
 	W.append([Un, Vn, En, Fn])
 	for i in range(len(n)):
-		print 'Loop i = {}'.format(i)
+		#print 'Loop i = {}'.format(i)
 		Upred = Un
 		Vpred = Vn
 		Epred = En
 		Fpred = Fn
 		cnt = 0
-		while True:
-			print 'while loop n = {}'.format(cnt)
-			print
+		oldDiffU = 100000
+		oldDiffE = 100000
+		#while True:
+		for j in range(innerloop):
+			#print 'while loop n = {}'.format(cnt)
 			r = sqrt(Upred**2 + Epred**2)
 			r3 = r**3
 			Unp1 = Un + h*Vpred
 			Vnp1 = Vn - h*G*m*Upred/r3
 			Enp1 = En + h*Fpred
 			Fnp1 = Fn - h*G*m*Epred/r3
+			#diffU = abs(Unp1 - Upred)
+			#diffE = abs(Enp1 - Epred)
+			#print 'diffU = {}, diffE = {}'.format(diffU, diffE)
+			"""
+			if diffU < tol and diffE < tol:
+				x.append(Upred)
+				y.append(Epred)
+				Un = Unp1
+				Vn = Vnp1
+				En = Enp1
+				Fn = Fnp1
+				break
+			elif diffU > oldDiffU or diffE > oldDiffE:
+				print 'The difference is bigger this iteration than last'
+				print 'i = {}, count = {}'.format(i, cnt)
+				print 'diffU = {} and oldDiffU = {}'.format(diffU, oldDiffU)
+				print 'diffE = {} and oldDiffE = {}'.format(diffE, oldDiffE)
+				raise Exception('STOP!')
+			"""
 			Upred = Unp1
 			Vpred = Vnp1
 			Epred = Enp1
 			Fpred = Fnp1
-			if abs(Upred - Un) < tol and abs(Epred - En) < tol:
-				x.append(Upred)
-				y.append(Epred)
-				Un = Upred
-				Vn = Vpred
-				En = Epred
-				Fn = Fpred
-				break
-			cnt += 1
+			#oldDiffU = diffU
+			#oldDiffE = diffE
+			#cnt += 1
+		x.append(Upred)
+		y.append(Epred)
+		Un = Upred
+		Vn = Vpred
+		En = Epred
+		Fn = Fpred
 	return x,y
 
 ## -- Task #1 -- ##
 
 #dy/dt = lambda*y(t), with y(0) = 1, lambda = -2, -1 and 4. Find the maximum possible stepvalue (h) whilst still staying within stable region.
+"""
+tol = 1e-3
 
-tol = 1e-5
 eigenvalues = [-2, -1, 4]
 for i in range(len(eigenvalues)):
 	print 'Lambda = {}, Excplicit max h = {}, Implicit max h = {}'.format(eigenvalues[i], explicitLinearTest(tol, eigenvalues[i]), implicitLinearTest(tol, eigenvalues[i]))
@@ -119,12 +141,15 @@ legend(loc = 'upper right')
 title('Explicit Euler Method')
 grid(True)
 show()
-
+"""
 tol = 1e-6
-
-implicitReturn1 = implicitEuler(0.0, 1.0, 2.0, 0.0, 0.1, tol)
+implicitReturn1 = implicitEuler(0.0, 1.0, 2.0, 0.0, 0.01, tol, 100)
 figure(2)
-plot(implicitReturn1[0], implicitReturn[1], label = 'h = 0.1')
+plot(implicitReturn1[0], implicitReturn1[1], label = 'h = 0.01, innerloop = 100')
+#implicitReturn1 = implicitEuler(0.0, 1.0, 2.0, 0.0, 0.0001, tol, 100)
+#plot(implicitReturn1[0], implicitReturn1[1], label = 'h = 0.0001, innerloop = 100')
+#implicitReturn2 = implicitEuler(0.0, 1.0, 2.0, 0.0, 0.001, tol, 1000)
+#plot(implicitReturn1[0], implicitReturn1[1], label = 'h = 0.001, innerloop = 1000')
 legend(loc = 'upper right')
 title('Implicit Euler Method')
 grid(True)
